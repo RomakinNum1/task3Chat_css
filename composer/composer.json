@@ -1,0 +1,21 @@
+{
+    "name": "roman/func",
+    "license": "GPL-3.0-only",
+    "authors": [
+        {
+            "name": "Roman Roman",
+            "email": "kinash2001@list.ru"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Roman\\Func\\": "../web/public"
+        }
+    },
+    "require": {
+        "symfony/routing": "^5.3",
+        "symfony/http-foundation": "^5.3",
+        "firebase/php-jwt": "^5.4",
+        "phpmailer/phpmailer": "^6.5"
+    }
+}
