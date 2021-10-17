@@ -47,7 +47,6 @@ if (!empty($errorFields)) {
     ];
 
     echo json_encode($response);
-    $_SESSION['reg'] = false;
     die();
 }
 
@@ -58,7 +57,6 @@ if ($_POST['password'] != $_POST['password_confirm']) {
         "message" => "Пароли не совпадают!",
         "fields" => ['password', 'password_confirm']
     ];
-    $_SESSION['reg'] = false;
     echo json_encode($response);
 }
 

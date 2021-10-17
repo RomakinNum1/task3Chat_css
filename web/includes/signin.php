@@ -31,11 +31,11 @@ $res = dataBaseEditor::Select($dataBaseConnect, $_POST);
 
 if ($res) {
     //$user = $check->fetch(PDO::FETCH_ASSOC);
-    /*$_SESSION['user'] = [
-        'id' => $data['id'],
-        'full_name' => $data['FIO'],
-        'email' => $data['email']
-    ];*/
+    $_SESSION['user'] = [
+        'id' => $_POST['id'],
+        'fullName' => $_POST['fullName'],
+        'email' => $_POST['email']
+    ];
 
     $response = [
         "status" => true
