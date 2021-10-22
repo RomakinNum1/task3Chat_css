@@ -10,7 +10,7 @@ $('button[id="login-btn"]').click(function (e) {
     let password = $('input[name ="password"]').val();
 
     $.ajax({
-        url: 'includes/signin',
+        url: 'http://users.api.loc/includes/signin',
         type: 'POST',
         dataType: 'json',
         data: {
@@ -21,7 +21,7 @@ $('button[id="login-btn"]').click(function (e) {
         success(data) {
 
             if (data.status) {
-                document.location.href = '/profile';
+                document.location.href = '/profile?name=' + data.fullName;
             } else {
                 if (data.type === 1) {
                     data.fields.forEach(function (field) {
@@ -49,16 +49,8 @@ $('button[id="reg-btn"]').click(function (e) {
     let password = $('input[name ="password"]').val();
     let password_confirm = $('input[name ="password_confirm"]').val();
 
-    //let formData = new FormData();
-    //formData.append('login', login);
-    //formData.append('fullName', fullName);
-    //formData.append('email', email);
-    //formData.append('password', password);
-    //formData.append('password_confirm', password_confirm);
-    //formData.append('avatar', avatar);
-
     $.ajax({
-        url: 'includes/signup',
+        url: 'http://users.api.loc/includes/signup',
         type: 'POST',
         dataType: 'json',
         data: {
@@ -86,11 +78,23 @@ $('button[id="reg-btn"]').click(function (e) {
     });
 });
 
-// avatar give
-
-/*let avatar = false;
-
-$('input[name = "avatar"]').change(function (e) {
-    avatar = e.target.files[0];
-});*/
-
+/*
+const chatEl = document.getElementById("chat");
+const ws = new WebSocket("ws://localhost:2346");
+ws.onmessage = (message) => {
+    let messages = JSON.parse(message.data);
+    const messageEl = document.createElement('div');
+    messageEl.appendChild(document.createTextNode(`${messages.name}: ${messages.message}`));
+    chat.appendChild(messageEl);
+}
+const send = (event) => {
+    event.preventDefault();
+    const name = document.getElementById("name").value;
+    const message = document.getElementById("message").value;
+    ws.send(JSON.stringify({
+        name, message
+    }))
+    return false;
+}
+const formEl = document.getElementById("messageForm");
+formEl.addEventListener("submit", send);*/

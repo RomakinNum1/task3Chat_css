@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<div class='chat'>
+    <div class='chat-messages' id='chat'>
+        <div class='chat-messages__content' id='messages'>
+            <script type="module">
+                const chatEl = document.getElementById("chat");
+                const ws = new WebSocket("ws://localhost:2346");
+                ws.onmessage = (message) => {
+                    let messages = JSON.parse(message.data);
+                    let name = '<?php echo $_GET["name"];?>'
+                    const messageEl = document.createElement('div');
+                    messageEl.appendChild(document.createTextNode(`${name} :${messages.message}`));
+                    chat.appendChild(messageEl);
+                }
+                const send = (event) => {
+                    event.preventDefault();
+                    const message = document.getElementById("message-text").value;
+                    ws.send(JSON.stringify({
+                        message
+                    }))
+                    return false;
+                }
+                const formEl = document.getElementById("chat-form");
+                formEl.addEventListener("submit", send);
+
+            </script>
+        </div>
+    </div>
+    <div class='chat-input'>
+        <form class='chat-form' method='post' id='chat-form'>
+            <input type='text' id='message-text' class='profile-input chat-form__input' placeholder='Введите сообщение'> <button type="submit" id='send-btn' class='chat-form__submit' >Отправить</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
+
+<!--<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+<form class="chat-form" id="messageForm">
+    <input type="text" name="name" id="name"/>
+    <input type="text" name="message" id="message"/>
+    <input type="submit" value="send"/>
+</form>
+
+<div id="chat"></div>
+<script type="module">
+    const chatEl = document.getElementById("chat");
+    const ws = new WebSocket("ws://localhost:2346");
+    ws.onmessage = (message) => {
+        let messages = JSON.parse(message.data);
+        const messageEl = document.createElement('div');
+        messageEl.appendChild(document.createTextNode(`${messages.name}: ${messages.message}`));
+        chat.appendChild(messageEl);
+    }
+    const send = (event) => {
+        event.preventDefault();
+        const name = document.getElementById("name").value;
+        const message = document.getElementById("message").value;
+        ws.send(JSON.stringify({
+            name, message
+        }))
+        return false;
+    }
+    const formEl = document.getElementById("messageForm");
+    formEl.addEventListener("submit", send);
+
+</script>
+</body>
+</html>-->
