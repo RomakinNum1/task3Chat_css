@@ -21,7 +21,7 @@ $('button[id="login-btn"]').click(function (e) {
         success(data) {
 
             if (data.status) {
-                document.location.href = '/profile?name=' + data.fullName;
+                document.location.href = '/profile?token=' + data.fullName;
             } else {
                 if (data.type === 1) {
                     data.fields.forEach(function (field) {

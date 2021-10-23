@@ -80,6 +80,15 @@ label {
     color:#fff;
 }
 
+.chat-info {
+    border:1px solid #333;
+    margin:15px;
+    width:30%;
+    height:70%;
+    background:#555;
+    color:#fff;
+}
+
 .chat-messages {
     min-height:93%;
     max-height:93%;

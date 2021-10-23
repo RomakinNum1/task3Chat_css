@@ -3,41 +3,35 @@
     <meta charset="UTF-8">
     <title>Профиль</title>
     <link rel="stylesheet" href="../css/main.css">
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
 </head>
 <body>
 
 <div class='chat'>
     <div class='chat-messages' id='chat'>
         <div class='chat-messages__content' id='messages'>
-            <script type="module">
-                const chatEl = document.getElementById("chat");
-                const ws = new WebSocket("ws://localhost:2346");
-                ws.onmessage = (message) => {
-                    let messages = JSON.parse(message.data);
-                    let name = '<?php echo $_GET["name"];?>'
-                    const messageEl = document.createElement('div');
-                    messageEl.appendChild(document.createTextNode(`${name} :${messages.message}`));
-                    chat.appendChild(messageEl);
-                }
-                const send = (event) => {
-                    event.preventDefault();
-                    const message = document.getElementById("message-text").value;
-                    ws.send(JSON.stringify({
-                        message
-                    }))
-                    return false;
-                }
-                const formEl = document.getElementById("chat-form");
-                formEl.addEventListener("submit", send);
-
-            </script>
+            <script src="../ajax/websocket.js" type="module"></script>
         </div>
     </div>
     <div class='chat-input'>
         <form class='chat-form' method='post' id='chat-form'>
-            <input type='text' id='message-text' class='profile-input chat-form__input' placeholder='Введите сообщение'> <button type="submit" id='send-btn' class='chat-form__submit' >Отправить</button>
+            <input type='text' id='message-text' class='profile-input chat-form__input' placeholder='Введите сообщение'>
+            <button type="submit" id='send-btn' class='chat-form__submit'>Отправить</button>
         </form>
     </div>
+</div>
+
+<div class='chat-info'>
+    <div class='chat-messages' id='users'>
+    </div>
+    <form class='chat-form' method='post' id='users-form'>
+        <div class='chat-messages__content'>
+            <button type="submit" id='logout-btn' class='chat-form__submit'>Выход</button>
+        </div>
+    </form>
 </div>
 
 </body>
