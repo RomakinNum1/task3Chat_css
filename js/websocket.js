@@ -1,6 +1,5 @@
 let name;
 let messages = [];
-const chatEl = document.getElementById("chat");
 const ws = new WebSocket("ws://localhost:2346");
 
 window.onbeforeunload = function() {
@@ -33,13 +32,14 @@ const send = (event) => {
 
     if (message === '') return;
 
-    requestToDB(name, message);
-
     document.getElementById("message-text").value = '';
     let type = 'sendMessage';
     ws.send(JSON.stringify({
         name, message, type
     }))
+
+    requestToDB(name, message);
+
     return false;
 }
 
