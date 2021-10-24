@@ -1,5 +1,6 @@
 <?php
 
+use Firebase\JWT\JWT;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -39,8 +40,13 @@ try {
     }
 
     if ($parameters['_route'] == 'profile') {
-        require_once 'templates/profile-temp.html';
-        return;
+        try{
+            $decoded = JWT::decode($_GET['token'], $_ENV['JWT_KEY'], array('HS256'));
+            require_once 'templates/profile-temp.html';
+            return;
+        }catch(Exception $ex){
+            header('Location: /');
+        }
     }
 } catch (ResourceNotFoundException $ex) {
     echo 'The request is incorrect';
