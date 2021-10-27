@@ -40,13 +40,8 @@ try {
     }
 
     if ($parameters['_route'] == 'profile') {
-        try{
-            $decoded = JWT::decode($_GET['token'], $_ENV['JWT_KEY'], array('HS256'));
-            require_once 'templates/profile-temp.html';
-            return;
-        }catch(Exception $ex){
-            header('Location: /');
-        }
+        require_once 'templates/profile-temp.html';
+        return;
     }
 } catch (ResourceNotFoundException $ex) {
     echo 'The request is incorrect';

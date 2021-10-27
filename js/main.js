@@ -1,5 +1,8 @@
-// autorise
+if (localStorage['tokenUserId'] != null) {
+    window.location.href = "http://chat.loc/profile";
+}
 
+// autorise
 $('button[id="login-btn"]').click(function (e) {
 
     e.preventDefault();
@@ -21,7 +24,8 @@ $('button[id="login-btn"]').click(function (e) {
         success(data) {
 
             if (data.status) {
-                document.location.href = '/profile?token=' + data.fullName;
+                document.location.href = '/profile';
+                localStorage.setItem('tokenUserId', data.Id);
             } else {
                 if (data.type === 1) {
                     data.fields.forEach(function (field) {
