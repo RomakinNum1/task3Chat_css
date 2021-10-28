@@ -1,4 +1,4 @@
-let name, id, count = 0;
+let name, count = 0;
 let messages = [];
 
 const ws = new WebSocket("ws://localhost:2346");
@@ -70,7 +70,7 @@ function printMessage(answer) {
     messageEl.appendChild(document.createTextNode(`${answer.name}: ${answer.message}`));
 
     const div = document.createElement('div');
-    div.style.textAlign='center'; //div.style.fontSize = '10px';
+    div.style.textAlign='center'; div.style.fontSize = '10px';
     div.appendChild(document.createTextNode(`${answer.time}`));
 
     chat.appendChild(div);
@@ -84,7 +84,7 @@ function printMessageFromDB(answer) {
     messageEl.appendChild(document.createTextNode(`${answer.name}: ${answer.message}`));
 
     const div = document.createElement('div');
-    div.style.textAlign='center'; //div.style.fontSize = '10px';
+    div.style.textAlign='center'; div.style.fontSize = '10px';
     div.appendChild(document.createTextNode(`${answer.time}`));
 
     chat.insertBefore(messageEl, chat.firstChild);
@@ -116,13 +116,12 @@ function requestForGetName(token) {
         },
         success(data) {
             if (data.status) {
-                name = data.fullName;
-                id = data.id;
+                name = data.login;
                 const message = " присоединяется к чату...";
                 const type = "addUser";
                 let time = getTime();
                 ws.send(JSON.stringify({
-                    name, message, type, time, id
+                    name, message, type, time
                 }))
             } else {
                 document.location.href = '/';
