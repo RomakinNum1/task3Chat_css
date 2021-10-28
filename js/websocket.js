@@ -70,7 +70,7 @@ function printMessage(answer) {
     messageEl.appendChild(document.createTextNode(`${answer.name}: ${answer.message}`));
 
     const div = document.createElement('div');
-    div.style.textAlign='right';
+    div.style.textAlign='center'; //div.style.fontSize = '10px';
     div.appendChild(document.createTextNode(`${answer.time}`));
 
     chat.appendChild(div);
@@ -84,7 +84,7 @@ function printMessageFromDB(answer) {
     messageEl.appendChild(document.createTextNode(`${answer.name}: ${answer.message}`));
 
     const div = document.createElement('div');
-    div.style.textAlign='right';
+    div.style.textAlign='center'; //div.style.fontSize = '10px';
     div.appendChild(document.createTextNode(`${answer.time}`));
 
     chat.insertBefore(messageEl, chat.firstChild);
