@@ -1,8 +1,8 @@
-if (localStorage['tokenUserId'] != null) {
+if (localStorage['tokenUserId'] != null) {                  //если токен уже есть перебрасываем в чат
     window.location.href = "http://chat.loc/profile";
 }
 
-// autorise
+// обработчик нажатия кнопки "авторизоваться"
 $('button[id="login-btn"]').click(function (e) {
 
     e.preventDefault();
@@ -12,7 +12,7 @@ $('button[id="login-btn"]').click(function (e) {
     let login = $('input[name ="login"]').val();
     let password = $('input[name ="password"]').val();
 
-    $.ajax({
+    $.ajax({                                                //запрос на получение записи из базы данных
         url: 'http://users.api.loc/includes/signin',
         type: 'POST',
         dataType: 'json',
@@ -24,7 +24,7 @@ $('button[id="login-btn"]').click(function (e) {
         success(data) {
 
             if (data.status) {
-                document.location.href = '/profile';
+                document.location.href = '/profile';        //переброс на чат
                 localStorage.setItem('tokenUserId', data.Id);
             } else {
                 if (data.type === 1) {
@@ -39,8 +39,7 @@ $('button[id="login-btn"]').click(function (e) {
     });
 });
 
-//registration
-
+//обработчик нажатия кнопки "зарегистрироваться"
 $('button[id="reg-btn"]').click(function (e) {
 
     e.preventDefault();
@@ -53,7 +52,7 @@ $('button[id="reg-btn"]').click(function (e) {
     let password = $('input[name ="password"]').val();
     let password_confirm = $('input[name ="password_confirm"]').val();
 
-    $.ajax({
+    $.ajax({                                                //запрос на получение записи из базы данных
         url: 'http://users.api.loc/includes/signup',
         type: 'POST',
         dataType: 'json',
@@ -68,7 +67,7 @@ $('button[id="reg-btn"]').click(function (e) {
         success(data) {
 
             if (data.status) {
-                document.location.href = '/authorise';
+                document.location.href = '/authorise';        //переброс на форму авторизации
             } else {
                 if (data.type === 1) {
                     data.fields.forEach(function (field) {
@@ -81,24 +80,3 @@ $('button[id="reg-btn"]').click(function (e) {
         }
     });
 });
-
-/*
-const chatEl = document.getElementById("chat");
-const ws = new WebSocket("ws://localhost:2346");
-ws.onmessage = (message) => {
-    let messages = JSON.parse(message.data);
-    const messageEl = document.createElement('div');
-    messageEl.appendChild(document.createTextNode(`${messages.name}: ${messages.message}`));
-    chat.appendChild(messageEl);
-}
-const send = (event) => {
-    event.preventDefault();
-    const name = document.getElementById("name").value;
-    const message = document.getElementById("message").value;
-    ws.send(JSON.stringify({
-        name, message
-    }))
-    return false;
-}
-const formEl = document.getElementById("messageForm");
-formEl.addEventListener("submit", send);*/

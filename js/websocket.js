@@ -1,35 +1,48 @@
 let name, count = 0;
 
+let formEl = document.getElementById("chat-form");//добавление функций на кнопки
+formEl.addEventListener("submit", send);
+
+formEl = document.getElementById("users-form"); //добавление функций на кнопки
+formEl.addEventListener("submit", logout);
+
+//Создание WebSocket
 const ws = new WebSocket(window.WEBSOCKET_CONNECTION_URL);
 
+//Обработчик закрытия вкладки/страницы
 window.onunload = function () {
-    sendUnconnect("removeUser");
+    sendUnconnect("removeUser");                    //отправка остальным пользователям об отключении пользователя
 };
 
-document.getElementById("chat").addEventListener('scroll', function () {
-    if (document.getElementById("chat").scrollTop < 1) {
-        count += 1;
-        requestForGetMessages(count);
-    }
-});
-
+//Обработчик создания WebSocket
 ws.onopen = (event) => {
     if (localStorage['tokenUserId'] == null) {
         ws.close();
         return;
     }
-    requestForGetMessages(count);
-    requestForGetName(localStorage['tokenUserId']);
+    requestForGetMessages(count);                       //подгрузка сообщений для только подключившегося пользователя
+    requestForGetName(localStorage['tokenUserId']);     //запрос на получение логина пользователя из токена
 }
 
+
+//Обработчик получения сообщения из сервера
 ws.onmessage = (message) => {
     const answer = JSON.parse(message.data);
     if (answer.type === "addUser" || answer.type === "removeUser") {
-        refreshUsers(answer);
+        refreshUsers(answer);                           //обновление списка онлайн пользователей
     }
-    printMessage(answer);
+    printMessage(answer);                               //отрисовка сообщения
 }
 
+//Обработчик прокрутки страницы сообщений на самый верх(пагинация)
+document.getElementById("chat").addEventListener('scroll', function () {
+    if (document.getElementById("chat").scrollTop < 1) {
+        count += 1;
+        requestForGetMessages(count);                   //подгрузка сообщений для пользователя, который долистал вверх(пагинация)
+    }
+});
+
+//обработчик нажатия кнопки "отправить"
 const send = (event) => {
     event.preventDefault();
     const message = document.getElementById("message-text").value;
@@ -43,27 +56,23 @@ const send = (event) => {
         name, message, type, time
     }))
 
-    requestToDB(name, message, time);
+    requestToDB(name, message, time);                    //добавление сообщения в базу данных
 
     return false;
 }
 
+//обработчик нажатия кнопки выход
 const logout = (event) => {
     event.preventDefault();
 
-    sendUnconnect("removeUser");
+    sendUnconnect("removeUser");                    //отправка остальным пользователям об отключении пользователя
 
     localStorage.removeItem('tokenUserId');
     window.location.href = "http://chat.loc/";
     return false;
 }
 
-let formEl = document.getElementById("chat-form");
-formEl.addEventListener("submit", send);
-
-formEl = document.getElementById("users-form");
-formEl.addEventListener("submit", logout);
-
+//функция отрисовки сообщения
 function printMessage(answer) {
     const messageEl = document.createElement('div');
     messageEl.appendChild(document.createTextNode(`${answer.name}: ${answer.message}`));
@@ -79,6 +88,7 @@ function printMessage(answer) {
     chat.scrollTo(0, chat.scrollHeight);
 }
 
+//(пагинация)функция отрисовки сообщений в самом начале страницы
 function printMessageFromDB(answer) {
     const messageEl = document.createElement('div');
     messageEl.appendChild(document.createTextNode(`${answer.name}: ${answer.message}`));
@@ -92,6 +102,7 @@ function printMessageFromDB(answer) {
     chat.insertBefore(div, chat.firstChild);
 }
 
+//функция добавления сообщения в базу данных
 function requestToDB(name, message, time) {
     $.ajax({
         url: 'http://chat.api.loc/includes/addMessage',
@@ -106,6 +117,7 @@ function requestToDB(name, message, time) {
     });
 }
 
+//функция получения логина пользователя из токена
 function requestForGetName(token) {
     $.ajax({
         url: 'http://chat.api.loc/includes/getToken',
@@ -115,7 +127,7 @@ function requestForGetName(token) {
         data: {
             token: token
         },
-        success(data) {
+        success(data) {                                 //отправка сообщения о новом подключении всем пользователя
             if (data.status) {
                 name = data.login;
                 const message = " присоединяется к чату...";
@@ -131,6 +143,7 @@ function requestForGetName(token) {
     });
 }
 
+//функция получения сообщений из базы данных
 function requestForGetMessages(count) {
     $.ajax({
         url: 'http://chat.api.loc/includes/getMessage',
@@ -140,7 +153,7 @@ function requestForGetMessages(count) {
         data: {
             count: count
         },
-        success(data) {
+        success(data) {                                 //прорисовка каждого сообщения(по умолчанию 50)
             for (let i = 0; i < data.length; i++) {
                 printMessageFromDB(data[i]);
             }
@@ -148,6 +161,7 @@ function requestForGetMessages(count) {
     });
 }
 
+//функция обновления списка пользователей онлайн
 function refreshUsers(answer) {
     while (users.firstChild) {
         users.removeChild(users.firstChild);
@@ -161,6 +175,7 @@ function refreshUsers(answer) {
     }
 }
 
+//функция получения текущего времени
 function getTime() {
     let options = {
         year: 'numeric',
@@ -175,6 +190,7 @@ function getTime() {
     return new Date().toLocaleString("ru", options);
 }
 
+//функция отправки сообщения об отключении пользователя
 function sendUnconnect(type) {
     const message = " отключается...";
     let time = getTime();

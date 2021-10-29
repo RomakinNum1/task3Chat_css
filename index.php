@@ -1,6 +1,5 @@
 <?php
 
-use Firebase\JWT\JWT;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -13,10 +12,10 @@ require 'composer/vendor/autoload.php';
 try {
     $routes = new RouteCollection();
 
-    $routes->add('chooseUser', new Route('/'));
-    $routes->add('register', new Route('/register'));
-    $routes->add('authorise', new Route('/authorise'));
-    $routes->add('profile', new Route('/profile'));
+    $routes->add('chooseUser', new Route('/'));             //начальная страница
+    $routes->add('register', new Route('/register'));       //форма регистрации
+    $routes->add('authorise', new Route('/authorise'));     //форма авторизации
+    $routes->add('profile', new Route('/profile'));         //форма чата
 
     $context = new RequestContext();
     $context->fromRequest(Request::createFromGlobals());
@@ -40,7 +39,7 @@ try {
     }
 
     if ($parameters['_route'] == 'profile') {
-        echo "<script>window.WEBSOCKET_CONNECTION_URL = '{$_ENV['WEBSOCKET_CONNECTION_URL']}'</script>";
+        echo "<script>window.WEBSOCKET_CONNECTION_URL = '{$_ENV['WEBSOCKET_CONNECTION_URL']}'</script>";//подключение переменной окружения
         require_once 'templates/profile-temp.html';
         return;
     }
