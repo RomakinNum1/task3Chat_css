@@ -1,11 +1,5 @@
 let name, count = 0;
 
-let formEl = document.getElementById("chat-form");//добавление функций на кнопки
-formEl.addEventListener("submit", send);
-
-formEl = document.getElementById("users-form"); //добавление функций на кнопки
-formEl.addEventListener("submit", logout);
-
 //Создание WebSocket
 const ws = new WebSocket(window.WEBSOCKET_CONNECTION_URL);
 
@@ -72,6 +66,12 @@ const logout = (event) => {
     return false;
 }
 
+let formEl = document.getElementById("chat-form");//добавление функций на кнопки
+formEl.addEventListener("submit", send);
+
+formEl = document.getElementById("users-form"); //добавление функций на кнопки
+formEl.addEventListener("submit", logout);
+
 //функция отрисовки сообщения
 function printMessage(answer) {
     const messageEl = document.createElement('div');
@@ -112,7 +112,8 @@ function requestToDB(name, message, time) {
         data: {
             message: message,
             name: name,
-            time: time
+            time: time,
+            token: localStorage['tokenUserId']
         }
     });
 }
@@ -151,7 +152,8 @@ function requestForGetMessages(count) {
         async: false,
         dataType: 'json',
         data: {
-            count: count
+            count: count,
+            token: localStorage['tokenUserId']
         },
         success(data) {                                 //прорисовка каждого сообщения(по умолчанию 50)
             for (let i = 0; i < data.length; i++) {
