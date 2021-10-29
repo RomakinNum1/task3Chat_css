@@ -40,6 +40,7 @@ try {
     }
 
     if ($parameters['_route'] == 'profile') {
+        echo "<script>window.WEBSOCKET_CONNECTION_URL = '{$_ENV['WEBSOCKET_CONNECTION_URL']}'</script>";
         require_once 'templates/profile-temp.html';
         return;
     }

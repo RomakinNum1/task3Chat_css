@@ -1,21 +1,20 @@
 let name, count = 0;
-let messages = [];
 
-const ws = new WebSocket("ws://localhost:2346");
+const ws = new WebSocket(window.WEBSOCKET_CONNECTION_URL);
 
 window.onunload = function () {
-    sendUnconnect("noRemoveUser");
+    sendUnconnect("removeUser");
 };
 
-document.getElementById("chat").addEventListener('scroll', function() {
+document.getElementById("chat").addEventListener('scroll', function () {
     if (document.getElementById("chat").scrollTop < 1) {
-        count+=1;
+        count += 1;
         requestForGetMessages(count);
     }
 });
 
 ws.onopen = (event) => {
-    if(localStorage['tokenUserId']==null){
+    if (localStorage['tokenUserId'] == null) {
         ws.close();
         return;
     }
@@ -70,7 +69,8 @@ function printMessage(answer) {
     messageEl.appendChild(document.createTextNode(`${answer.name}: ${answer.message}`));
 
     const div = document.createElement('div');
-    div.style.textAlign='center'; div.style.fontSize = '10px';
+    div.style.textAlign = 'center';
+    div.style.fontSize = '10px';
     div.appendChild(document.createTextNode(`${answer.time}`));
 
     chat.appendChild(div);
@@ -84,7 +84,8 @@ function printMessageFromDB(answer) {
     messageEl.appendChild(document.createTextNode(`${answer.name}: ${answer.message}`));
 
     const div = document.createElement('div');
-    div.style.textAlign='center'; div.style.fontSize = '10px';
+    div.style.textAlign = 'center';
+    div.style.fontSize = '10px';
     div.appendChild(document.createTextNode(`${answer.time}`));
 
     chat.insertBefore(messageEl, chat.firstChild);
@@ -160,7 +161,7 @@ function refreshUsers(answer) {
     }
 }
 
-function getTime(){
+function getTime() {
     let options = {
         year: 'numeric',
         month: 'numeric',
@@ -174,7 +175,7 @@ function getTime(){
     return new Date().toLocaleString("ru", options);
 }
 
-function sendUnconnect(type){
+function sendUnconnect(type) {
     const message = " отключается...";
     let time = getTime();
     ws.send(JSON.stringify({
