@@ -62,7 +62,7 @@ const logout = (event) => {
     sendUnconnect("removeUser");                    //отправка остальным пользователям об отключении пользователя
 
     localStorage.removeItem('tokenUserId');
-    window.location.href = "http://chat.loc/";
+    window.location.href = "/";
     return false;
 }
 
@@ -105,7 +105,7 @@ function printMessageFromDB(answer) {
 //функция добавления сообщения в базу данных
 function requestToDB(name, message, time) {
     $.ajax({
-        url: 'http://chat.api.loc/includes/addMessage',
+        url: 'http://chat.loc/chat_api/includes/addMessage',
         type: 'POST',
         async: false,
         dataType: 'json',
@@ -121,7 +121,7 @@ function requestToDB(name, message, time) {
 //функция получения логина пользователя из токена
 function requestForGetName(token) {
     $.ajax({
-        url: 'http://chat.api.loc/includes/getToken',
+        url: 'http://chat.loc/chat_api/includes/getToken',
         type: 'POST',
         async: false,
         dataType: 'json',
@@ -147,7 +147,7 @@ function requestForGetName(token) {
 //функция получения сообщений из базы данных
 function requestForGetMessages(count) {
     $.ajax({
-        url: 'http://chat.api.loc/includes/getMessage',
+        url: 'http://chat.loc/chat_api/includes/getMessage',
         type: 'POST',
         async: false,
         dataType: 'json',

@@ -13,7 +13,7 @@ $('button[id="login-btn"]').click(function (e) {
     let password = $('input[name ="password"]').val();
 
     $.ajax({                                                //запрос на получение записи из базы данных
-        url: 'http://users.api.loc/includes/signin',
+        url: 'http://chat.loc/user_api/includes/signin',
         type: 'POST',
         dataType: 'json',
         data: {
@@ -53,7 +53,7 @@ $('button[id="reg-btn"]').click(function (e) {
     let password_confirm = $('input[name ="password_confirm"]').val();
 
     $.ajax({                                                //запрос на получение записи из базы данных
-        url: 'http://users.api.loc/includes/signup',
+        url: 'http://chat.loc/user_api/includes/signup',
         type: 'POST',
         dataType: 'json',
         data: {
